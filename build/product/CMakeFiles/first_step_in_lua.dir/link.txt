@@ -1,0 +1,1 @@
+/usr/bin/c++   -g    CMakeFiles/first_step_in_lua.dir/src/main.cpp.o  -o bin/first_step_in_lua -rdynamic 
