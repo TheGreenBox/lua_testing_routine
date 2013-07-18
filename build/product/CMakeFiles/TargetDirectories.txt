@@ -1,1 +1,0 @@
-/home/alexander/source/first_step_in_lua/build/product/CMakeFiles/first_step_in_lua.dir

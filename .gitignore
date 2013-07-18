@@ -1,0 +1,6 @@
+build/product
+thirdparty/builds/product
+thirdparty/builds/build_workspace
+*.swp
+*.o
+
