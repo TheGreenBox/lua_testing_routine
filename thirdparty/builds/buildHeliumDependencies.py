@@ -55,16 +55,16 @@ def luaDownloadAndBuild ( buildType ):
         
     os.mkdir(luaHeliumWorkingDir)
     cmakeBuildType = ''
-    if buildType == 'Release' or buildType == 'Debug':
-        luaHeliumWorkingDir = luaHeliumWorkingDir + '/' + buildType
-        os.mkdir(luaHeliumWorkingDir)
-        cmakeBuildType = '-DCMAKE_BUILD_TYPE='+buildType
-    else:
-        buildType = ''
     
     cmakeGenerator = ''
     if sys.platform == 'linux2':
         cmakeGenerator = '-GUnix Makefiles'
+        if buildType != 'Release':
+            buildType = 'Debug':
+        luaHeliumWorkingDir = luaHeliumWorkingDir + '/' + buildType
+        os.mkdir(luaHeliumWorkingDir)
+        cmakeBuildType = '-DCMAKE_BUILD_TYPE='+buildType
+    
     elif sys.platform == 'win32':
         cmakeGenerator = '-GVisual Studio 11'
         
