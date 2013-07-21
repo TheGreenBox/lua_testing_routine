@@ -42,7 +42,7 @@ def luaDownloadAndBuild ( buildType ):
         
     os.mkdir(luaHeliumWorkingDir)
     cmakeBuildType = ''
-    if buildType == 'Release' or builType == 'Debug':
+    if buildType == 'Release' or buildType == 'Debug':
         luaHeliumWorkingDir = luaHeliumWorkingDir + '/' + buildType
         os.mkdir(luaHeliumWorkingDir)
         cmakeBuildType = '-DCMAKE_BUILD_TYPE='+buildType
@@ -64,6 +64,7 @@ def luaDownloadAndBuild ( buildType ):
                     cmakeInstallParam,
                     luaHeliumDir    ]
     
+    print("Cmake generating...")
     cmakeProc = subprocess.Popen(luaCmakeCmd, stdout=subprocess.PIPE)
     log, logEr = cmakeProc.communicate()
     
@@ -77,6 +78,7 @@ def luaDownloadAndBuild ( buildType ):
         print("Error out:\n")
         print(logEr)
 
+    print("Try to build, wait please...")
     makeProc = subprocess.Popen(['make'], stdout=subprocess.PIPE)
     log, logEr = makeProc.communicate()
 
@@ -90,6 +92,7 @@ def luaDownloadAndBuild ( buildType ):
         print("Error out:\n")
         print(logEr)
 
+    print("Try to make install, wait few second please...")
     makeInstallProc = subprocess.Popen(['make', 'install'], stdout=subprocess.PIPE)
     log, logEr = makeInstallProc.communicate()
     
@@ -108,7 +111,7 @@ def luaDownloadAndBuild ( buildType ):
 
 try:
    luaDownloadAndBuild ('Release')
-   # luaDownloadAndBuild ('Debug')
+   luaDownloadAndBuild ('Debug')
 
 #except Exception as e:
 #    print("Something wrong ...")

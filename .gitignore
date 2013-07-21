@@ -1,6 +1,9 @@
 build/product
 thirdparty/builds/product
-thirdparty/builds/build_workspace
+thirdparty/builds/build
+thirdparty/builds/log
+thirdparty/lua/build
+thirdparty/lua/lua-5*
 *.swp
 *.o
 
