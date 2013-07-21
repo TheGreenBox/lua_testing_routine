@@ -12,7 +12,7 @@ PROJECT(lualib C)
 # to distinguish between debug and release lib
 SET(CMAKE_DEBUG_POSTFIX "_d")
 
-SET ( LUALIB_SRC_DIR ${CMAKE_SOURCE_DIR}/lua/lua-5.2.2/src )
+SET ( LUALIB_SRC_DIR ${CMAKE_SOURCE_DIR}/lua-5.2.2/src )
 
 SET ( lualib_HDRS
         ${LUALIB_SRC_DIR}/lmem.h
