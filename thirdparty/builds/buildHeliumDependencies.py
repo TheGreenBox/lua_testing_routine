@@ -46,9 +46,9 @@ def luaDownloadAndBuild ( buildType ):
     luaArch = zipfile.ZipFile(luaArchiveWithSrcs, 'r')
     luaArch.extractall(luaHeliumDir)
     
-    log_file.write('downloaded: '+luaArchiveWithSrcs)
+    log_file.write('downloaded: '+luaArchiveWithSrcs + '\n')
     print('downloaded: '+luaArchiveWithSrcs)
-    log_file.write('and extracted to: '+luaHeliumDir)
+    log_file.write('and extracted to: '+luaHeliumDir + '\n')
     print('and extracted to: '+luaHeliumDir)
     
     if os.path.isdir(luaHeliumWorkingDir):
@@ -88,10 +88,10 @@ def luaDownloadAndBuild ( buildType ):
         runCmd(['make', 'install'], log_file)
     
     elif sys.platform == 'win32':
-        cmd = '\"%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe\"'
-        arg1 = '/nologo'
-        arg3 =  'ALL_BUILD.vcxproj'
-        arg2 = '/property:Configuration='+buildType
+        cmd = 'c:/Windows/Microsoft.NET/Framework/v4.0.30319/MSBuild.exe'
+        arg1 = 'ALL_BUILD.vcxproj'
+        arg2 = '/p:Configuration='+buildType
+        arg3 = '/nologo'
         runCmd([cmd, arg1, arg2, arg3], log_file)
     
     os.chdir(rootScriptName)
@@ -101,9 +101,9 @@ try:
    luaDownloadAndBuild ('Release')
    luaDownloadAndBuild ('Debug')
 
-#except Exception as e:
-#    print("Something wrong ...")
-#    print(e)
+except Exception as e:
+    print("Something wrong ...")
+    print(e)
 
 finally:
     log_file.close()
