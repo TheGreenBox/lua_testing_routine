@@ -1,13 +1,14 @@
 #-*- utf-8 -*-
 
 
-
 import os
 import sys
 import time
 import zipfile
 import subprocess
 import shutil
+
+print("Platform: ", sys.platform )
 
 rootScriptName = os.path.abspath(os.path.dirname(__file__))
 outputDirName = rootScriptName+'/product'
@@ -60,7 +61,7 @@ def luaDownloadAndBuild ( buildType ):
     if sys.platform == 'linux2':
         cmakeGenerator = '-GUnix Makefiles'
         if buildType != 'Release':
-            buildType = 'Debug':
+            buildType = 'Debug'
         luaHeliumWorkingDir = luaHeliumWorkingDir + '/' + buildType
         os.mkdir(luaHeliumWorkingDir)
         cmakeBuildType = '-DCMAKE_BUILD_TYPE='+buildType
