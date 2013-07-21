@@ -21,7 +21,20 @@ if not os.path.isdir(rootScriptName+'/log'):
 
 log_file = open("log/heluim_thirdparty_buildlog_"+time.strftime("%m.%d_%H.%M.%S") + '.log', 'a')
 
-#os.path.normpath()
+def runCmd(cmd, logFile):
+    cmakeProc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    log, logEr = cmakeProc.communicate()
+    
+    if log:
+        logFile.write(log)
+        print("Stdout:\n")
+        print(log)
+        
+    if logEr:
+        logFile.write(logEr)
+        print("Error out:\n")
+        print(logEr)
+    return
 
 def luaDownloadAndBuild ( buildType ):
     
@@ -65,46 +78,20 @@ def luaDownloadAndBuild ( buildType ):
                     luaHeliumDir    ]
     
     print("Cmake generating...")
-    cmakeProc = subprocess.Popen(luaCmakeCmd, stdout=subprocess.PIPE)
-    log, logEr = cmakeProc.communicate()
-    
-    if log:
-        log_file.write(log)
-        print("Stdout:\n")
-        print(log)
-        
-    if logEr:
-        log_file.write(logEr)
-        print("Error out:\n")
-        print(logEr)
+    runCmd(luaCmakeCmd, log_file)
 
     print("Try to build, wait please...")
-    makeProc = subprocess.Popen(['make'], stdout=subprocess.PIPE)
-    log, logEr = makeProc.communicate()
-
-    if log:
-        log_file.write(log)
-        print("Stdout:\n")
-        print(log)
-        
-    if logEr:
-        log_file.write(logEr)
-        print("Error out:\n")
-        print(logEr)
-
-    print("Try to make install, wait few second please...")
-    makeInstallProc = subprocess.Popen(['make', 'install'], stdout=subprocess.PIPE)
-    log, logEr = makeInstallProc.communicate()
+    if sys.platform == 'linux2':
+        runCmd(['make'], log_file)
+        print("Try to make install, wait few second please...")
+        runCmd(['make', 'install'], log_file)
     
-    if log:
-        log_file.write(log)
-        print("Stdout:\n")
-        print(log)
-        
-    if logEr:
-        log_file.write(logEr)
-        print("Error out:\n")
-        print(logEr)
+    elif sys.platform == 'win32':
+        cmd = '\"%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe\"'
+        arg1 = '/nologo'
+        arg3 =  'ALL_BUILD.vcxproj'
+        arg2 = '/property:Configuration='+buildType
+        runCmd([cmd, arg1, arg2, arg3], log_file)
     
     os.chdir(rootScriptName)
     return
