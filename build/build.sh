@@ -17,4 +17,5 @@ echo building
 echo ------------------------------------------------------
 
 make
+make install
 

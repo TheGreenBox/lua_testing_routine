@@ -8,6 +8,7 @@ project(first_step_in_lua)
 
 SET( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 SET( HELIUM_THIRD_PARTY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/thirdparty/builds/product/ )
+SET( OUTCOME_PATH ${CMAKE_BINARY_DIR}/product )
 
 FIND_PACKAGE( Lua REQUIRED )
 
@@ -29,13 +30,29 @@ INCLUDE_DIRECTORIES( ${LUA_INCLUDE_DIR} )
 
 SET( EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin )
 
-SET( SOURCES ${CMAKE_SOURCE_DIR}/src/main.cpp )
-SET( HEADERS )
+SET ( SOURCES 
+        ${CMAKE_SOURCE_DIR}/src/main.cpp 
+        ${CMAKE_SOURCE_DIR}/src/cardsDeck.cpp
+    )
+
+SET ( HEADERS
+        ${CMAKE_SOURCE_DIR}/src/cardsDeck.h
+    )
 
 ADD_EXECUTABLE ( first_step_in_lua 
                     ${SOURCES}
                     ${HEADERS}      
                )
 
-target_link_libraries( first_step_in_lua ${HELIUM_THIRDPARTY_LIB} )
+TARGET_LINK_LIBRARIES( first_step_in_lua ${HELIUM_THIRDPARTY_LIB} )
+
+INSTALL ( TARGETS first_step_in_lua
+            DESTINATION ${OUTCOME_PATH}
+        )
+
+INSTALL ( DIRECTORY ${CMAKE_SOURCE_DIR}/scripts
+            DESTINATION ${OUTCOME_PATH}
+        )
+
+MESSAGE(STATUS "END HELIUM GENERATING")
 
