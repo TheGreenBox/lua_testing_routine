@@ -19,11 +19,14 @@ int main (int argsNumber, char** argAr)
     std::cout << "Lets go...\n\n";
     int rez = 0;
     Lua::lua_State* luaSt = Lua::luaL_newstate();
-    Lua::luaopen_base(luaSt);
-    Lua::luaopen_io(luaSt);
-    Lua::luaopen_table(luaSt);
+    //Lua::luaopen_base(luaSt);
+    //Lua::luaopen_io(luaSt);
+    //Lua::luaopen_table(luaSt);
     
-    rez = Lua::luaL_loadfile(luaSt, "scripts/cardsDeckCreate.lua");
+    Lua::luaL_openlibs(luaSt);
+    CardsDeck::luaRegisterCardsDeck(luaSt);
+    
+    rez = Lua::luaL_loadfile(luaSt, "scripts/cardsDeckClass.lua");
     std::cout << "load file: " << rez << '\n';
     if (rez != 0) {
         std::cout << "Error while loading script file!\n" 

@@ -47,7 +47,7 @@ static int luaNewCardsDeck(Lua::lua_State* LState) {
     CardsDeck** pp_cd = (CardsDeck**)lua_newuserdata(LState, sizeof(CardsDeck*));
     *pp_cd = new CardsDeck();
     
-    luaL_getmetatable(LState, "Lua.MyClass");
+    luaL_getmetatable(LState, "Lua.CardsDeck");
     lua_setmetatable(LState, -2);
     lua_setfield(LState, -2, "__self");
     return 1;
@@ -73,9 +73,19 @@ static int luaAddCard( Lua::lua_State* LState ) {
     return 1;
 }
 
+static int luaShowAllCards( Lua::lua_State* LState ) {
+    using namespace Lua;
+
+    CardsDeck* p_cd = NULL;
+    luaL_checkudata(LState, 1, "Lua.CardsDeck");
+    p_cd->showAll();
+    return 1;
+}
+
 static const Lua::luaL_Reg gCardsDeckFunctions[] = {
-    { "new",     luaNewCardsDeck },
-    { "addCard", luaAddCard },
+    { "new",          luaNewCardsDeck },
+    { "addCard",      luaAddCard },
+    { "showAllCards", luaShowAllCards },
     { NULL, NULL }
 };
 
@@ -85,5 +95,6 @@ void CardsDeck::luaRegisterCardsDeck(Lua::lua_State* LState) {
     luaL_register(LState, 0, gCardsDeckFunctions);
     lua_pushvalue(LState, -1);
     lua_setfield(LState, -2, "__index");
+    luaL_register(LState, "CardsDeck", gCardsDeckFunctions);
 }
 

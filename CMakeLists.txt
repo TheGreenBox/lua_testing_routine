@@ -26,6 +26,14 @@ ELSE()
     MESSAGE (ERROR "CMAKE_BUILD_TYPE must be defined")
 ENDIF()
 
+IF(UNIX)
+    SET ( HELIUM_THIRDPARTY_LIB
+            ${HELIUM_THIRDPARTY_LIB}
+            -ldl 
+            -lm
+        )
+ENDIF(UNIX)
+
 INCLUDE_DIRECTORIES( ${LUA_INCLUDE_DIR} )
 
 SET( EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin )
