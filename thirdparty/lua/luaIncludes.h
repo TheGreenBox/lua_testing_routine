@@ -7,11 +7,16 @@
  * Author:  AKindyakov 
  * ========================================================
  */
+#ifndef _LUA_COMMON_INCLUDED
+#define _LUA_COMMON_INCLUDED
 
-extern "C"
-{
-    #include "lua.h"
-    #include "lauxlib.h"
-    #include "lualib.h"
+namespace Lua {
+    extern "C" {
+        #include "lua.h"
+        #include "lauxlib.h"
+        #include "lualib.h"
+    }
 }
+
+#endif // _LUA_COMMON_INCLUDED
 

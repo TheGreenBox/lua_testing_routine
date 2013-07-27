@@ -8,6 +8,7 @@
  * ========================================================
  */
 #include <list>
+#include "luaIncludes.h"
 
 class Card
 {
@@ -24,9 +25,10 @@ class CardsDeck
 public:
     CardsDeck();
         
-    void addCard( Card _card );
+    void addCard( const char* _name, int _level );
     
     void showAll();
+    static void luaRegisterCardsDeck(Lua::lua_State*); 
 
 private:
     std::list<Card> cards;
