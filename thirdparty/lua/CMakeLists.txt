@@ -101,3 +101,6 @@ INSTALL ( FILES ${LUALIB_IMPORT_HEADERS}
             DESTINATION ${HELIUM_THIRD_PARTY_OUTPUT_PATH}/lualib/include
         )
 
+INSTALL ( FILES ${CMAKE_SOURCE_DIR}/luaIncludes.h            
+            DESTINATION ${HELIUM_THIRD_PARTY_OUTPUT_PATH}/lualib/include
+        )
