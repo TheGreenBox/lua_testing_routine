@@ -35,21 +35,21 @@ void CardsDeck::showAll() {
 static int luaNewCardsDeck(Lua::lua_State* LState) {
     using namespace Lua;
     int argn = lua_gettop(LState);
-    if ( argn != 0 ) {
-        return luaL_error(LState, "Got %d arguments, expected 0 ", argn);
+    if ( argn != 1 ) {
+        return luaL_error(LState, "Got %d arguments, expected 1 ( class ) ", argn);
     }
     
     luaL_checktype(LState, 1, LUA_TTABLE); 
     // Create table to rrepresent instance
-    lua_newtable(LState);
-    lua_pushvalue(LState, 1);
-    lua_setfield(LState, 1, "__index");
+//    lua_newtable(LState);
+//    lua_pushvalue(LState, 1);
+//    lua_setfield(LState, 1, "__index");
     CardsDeck** pp_cd = (CardsDeck**)lua_newuserdata(LState, sizeof(CardsDeck*));
     *pp_cd = new CardsDeck();
     
-    luaL_getmetatable(LState, "Lua.CardsDeck");
+    luaL_getmetatable(LState, "_CardsDeck");
     lua_setmetatable(LState, -2);
-    lua_setfield(LState, -2, "__self");
+//    lua_setfield(LState, -2, "__self");
     return 1;
 }
 
@@ -68,7 +68,7 @@ static int luaAddCard( Lua::lua_State* LState ) {
     }
     
     CardsDeck* p_cd = NULL;
-    luaL_checkudata(LState, 1, "Lua.CardsDeck");
+    luaL_checkudata(LState, 1, "CardsDeck");
     p_cd->addCard(_name, _priority);
     return 1;
 }
@@ -77,24 +77,29 @@ static int luaShowAllCards( Lua::lua_State* LState ) {
     using namespace Lua;
 
     CardsDeck* p_cd = NULL;
-    luaL_checkudata(LState, 1, "Lua.CardsDeck");
+    luaL_checkudata(LState, 1, "CardsDeck");
     p_cd->showAll();
     return 1;
 }
 
-static const Lua::luaL_Reg gCardsDeckFunctions[] = {
-    { "new",          luaNewCardsDeck },
-    { "addCard",      luaAddCard },
-    { "showAllCards", luaShowAllCards },
-    { NULL, NULL }
-};
 
 void CardsDeck::luaRegisterCardsDeck(Lua::lua_State* LState) {
     using namespace Lua;
-    luaL_newmetatable(LState, "Lua.CardsDeck"); 
-    luaL_register(LState, 0, gCardsDeckFunctions);
+
+    const Lua::luaL_Reg gCardsDeckFunctions[] = {
+        { "new",          luaNewCardsDeck },
+        { "addCard",      luaAddCard },
+        { "showAllCards", luaShowAllCards },
+        { NULL, NULL }
+    };
+    // luaL_register(LState, "CardsDeck", gCardsDeckFunctions);
+    // lua_pushvalue(LState, -1);
+    // lua_setfield(LState, -2, "__index");
+   
+    luaL_newmetatable(LState, "_CardsDeck");
+    luaL_setfuncs(LState, gCardsDeckFunctions, 0);
     lua_pushvalue(LState, -1);
-    lua_setfield(LState, -2, "__index");
-    luaL_register(LState, "CardsDeck", gCardsDeckFunctions);
+    lua_setfield(LState, -1, "__index");
+    lua_setglobal(LState, "CardsDeck");
 }
 
