@@ -2,6 +2,12 @@
 
 local deck = CardsDeck:new();
 
+print ("\nLua: cardDeck");
+for k,v in pairs(CardsDeck) do
+    print(k);
+end
+
+print ("\nLua: deck");
 for k,v in pairs(deck) do
     print(k);
 end

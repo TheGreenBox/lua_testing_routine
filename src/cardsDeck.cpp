@@ -46,18 +46,24 @@ static int luaNewCardsDeck(Lua::lua_State* LState) {
     
     luaL_checktype(LState, 1, LUA_TTABLE); 
     // Create table to rrepresent instance
+    //// create a new empty table and pushes it onto the stack
     lua_newtable(LState);
+    //// pushes a copy of element at given valid index onto the stack
     lua_pushvalue(LState, 1);
-    
+
     lua_setmetatable(LState, -2);
     lua_pushvalue(LState, 1);
     lua_setfield(LState, 1, "__index");
     
     CardsDeck** pp_cd = (CardsDeck**)lua_newuserdata(LState, sizeof(CardsDeck*));
     *pp_cd = new CardsDeck();
-    
-    luaL_getmetatable(LState, "_CardsDeck");
+    // push onto the stack the metatable associated with name    
+    luaL_getmetatable(LState, "CardsDeck");
+    // pops a table from the stack and sets it 
+    // as the new metatble for the value at given acceptable index
     lua_setmetatable(LState, -2);
+    // Does the equivalent to t[k] = v, where t is the value at given at given valid index and v is
+    // the value at the top of the stack    
     lua_setfield(LState, -2, "__self");
     return 1;
 }
@@ -105,7 +111,7 @@ void CardsDeck::luaRegisterCardsDeck(Lua::lua_State* LState) {
     // lua_pushvalue(LState, -1);
     // lua_setfield(LState, -2, "__index");
    
-    luaL_newmetatable(LState, "_CardsDeck");
+    luaL_newmetatable(LState, "CardsDeck");
     luaL_register(LState, 0, gCardsDeckFunctions);
     //luaL_setfuncs(LState, gCardsDeckFunctions, 0);
     lua_pushvalue(LState, -1);
