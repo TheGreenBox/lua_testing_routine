@@ -7,20 +7,25 @@
  * Author:  AKindyakov 
  * ========================================================
  */
+
 #include <iostream>
 #include <list>
 #include "cardsDeck.h"
 
 Card::Card(const char* _name, int _level)
     : name(_name), level(_level)
-{}
+{
+    std::cout << "Card is born!\n";
+}
 
 const char* Card::getTitle() const {
     return name; 
 }
 
 CardsDeck::CardsDeck() 
-{}
+{
+    std::cout << "CardDeck is born!\n";
+}
         
 void CardsDeck::addCard( const char* _name, int _level  ) {
     cards.push_back( Card(_name,_level) );
@@ -41,15 +46,19 @@ static int luaNewCardsDeck(Lua::lua_State* LState) {
     
     luaL_checktype(LState, 1, LUA_TTABLE); 
     // Create table to rrepresent instance
-//    lua_newtable(LState);
-//    lua_pushvalue(LState, 1);
-//    lua_setfield(LState, 1, "__index");
+    lua_newtable(LState);
+    lua_pushvalue(LState, 1);
+    
+    lua_setmetatable(LState, -2);
+    lua_pushvalue(LState, 1);
+    lua_setfield(LState, 1, "__index");
+    
     CardsDeck** pp_cd = (CardsDeck**)lua_newuserdata(LState, sizeof(CardsDeck*));
     *pp_cd = new CardsDeck();
     
     luaL_getmetatable(LState, "_CardsDeck");
     lua_setmetatable(LState, -2);
-//    lua_setfield(LState, -2, "__self");
+    lua_setfield(LState, -2, "__self");
     return 1;
 }
 
@@ -97,9 +106,11 @@ void CardsDeck::luaRegisterCardsDeck(Lua::lua_State* LState) {
     // lua_setfield(LState, -2, "__index");
    
     luaL_newmetatable(LState, "_CardsDeck");
-    luaL_setfuncs(LState, gCardsDeckFunctions, 0);
+    luaL_register(LState, 0, gCardsDeckFunctions);
+    //luaL_setfuncs(LState, gCardsDeckFunctions, 0);
     lua_pushvalue(LState, -1);
-    lua_setfield(LState, -1, "__index");
-    lua_setglobal(LState, "CardsDeck");
+    lua_setfield(LState, -2, "__index");
+    //lua_setglobal(LState, "CardsDeck");
+    luaL_register(LState, "CardsDeck", gCardsDeckFunctions);
 }
 

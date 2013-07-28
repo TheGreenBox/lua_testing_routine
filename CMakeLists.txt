@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------
-#  Root CMake file for Neron proj
+#  Root CMake file for Helium proj
 # ----------------------------------------------------------------------------
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.7)
@@ -29,8 +29,8 @@ ENDIF()
 IF(UNIX)
     SET ( HELIUM_THIRDPARTY_LIB
             ${HELIUM_THIRDPARTY_LIB}
-            -ldl 
-            -lm
+            -ldl  # for lua lib
+            -lm   # for lua lib
         )
 ENDIF(UNIX)
 
