@@ -7,14 +7,9 @@ for k,v in pairs(CardsDeck) do
     print(k);
 end
 
-print ("\nLua: deck");
-for k,v in pairs(deck) do
-    print(k);
-end
-
-deck:addCard("Jocker", 100);
-deck:addCard("Diamonds King", 19);
-deck:showAllCards();
+CardsDeck:addCard(deck, "Jocker", 100);
+CardsDeck:addCard(deck, "Diamonds King", 19);
+CardsDeck:showAllCards(deck);
 
 return deck;
 

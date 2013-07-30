@@ -15,6 +15,7 @@ class Card
 public:
     Card(const char* _name, int _level);
     const char* getTitle()const;
+    int getPriority()const;
 private:
     const char* name;
     int level;
